@@ -25,3 +25,13 @@ This project builds on Project 1 and introduces **data validation and advanced F
 - **Path & Query Parameter Validation** – Validate incoming parameters dynamically.
 - **Status Codes & HTTP Exceptions** – Handle responses explicitly with proper HTTP status codes.
 
+### HTTP Status Codes - Key Takeaways
+
+| Status Code | Meaning                   | Typical Usage               |
+|------------|---------------------------|----------------------------|
+| 200 OK     | Request successful        | GET, PUT, DELETE           |
+| 201 Created| Resource created          | POST                       |
+| 204 No Content | Success, no data       | DELETE, PUT (sometimes)    |
+| 400 Bad Request | Invalid request       | POST, PUT                  |
+| 404 Not Found | Resource not found      | GET, PUT, DELETE           |
+| 500 Internal Server Error | Server failed | Any request               |
