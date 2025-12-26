@@ -73,5 +73,6 @@ async def delete_book(title:str):
             return {"message": "Book deleted successfully"}
     return {"error": "Book not found"}
 
-
+#key takeway:
+#put static before dynamic
 
