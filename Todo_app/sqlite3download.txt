@@ -1,0 +1,2 @@
+sqlite3 homepage -> downloads-> Precompiled Binaries for Windows (downloaded and extracted to C drive)
+->renamed to sqlite3-> environ var edit -> system variable edit path-> add new path 'C:\sqlite3'->done:))))
