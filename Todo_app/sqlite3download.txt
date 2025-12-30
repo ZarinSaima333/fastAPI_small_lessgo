@@ -5,3 +5,9 @@ To Check:
 C:\Users\USER>sqlite3
 SQLite version 3.51.1 2025-11-28 17:28:25
 
+#type of view in sqlite3
+.mode column
+.mode markdown
+.mode box
+.mode table
+.mode
