@@ -5,6 +5,7 @@ from database import  session_local
 from pydantic import BaseModel
 from model import Users
 from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordRequestForm
 
 router =  APIRouter()
 
@@ -31,6 +32,17 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
+def autheniocate_user(username:str,password:str,db):
+    user= db.query(Users).filter(Users.username==username).first()
+    if not user:
+        return False
+    if not bcrypt_context.verify(password,user.hashed_pass):
+        return False
+    return True #correct pass
+
+
+
+
 @router.post("/auth/",status_code=status.HTTP_201_CREATED)
 async def create_user(db:db_dependency,create_user_req:CreateUserReq):
     #create_user_model = Users(**create_user_req.model_dump())
@@ -48,8 +60,19 @@ async def create_user(db:db_dependency,create_user_req:CreateUserReq):
 
     db.add(create_user_model) #ekhono post req er output null ashe, sqlite e dekhte pai cmd te,db te save hoise.
     db.commit()
-    #return create_user_model #correct
+    return create_user_model #correct
 
     #return {'user': "authentication"} return charao possible, response body te 200 ashe
 
 #wont create two app/port learn about routing:)
+
+#authentication tasks started!
+
+@router.post("/token")
+async def login_for_access_token(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
+                                 db:db_dependency):
+    user= autheniocate_user(form_data.username,form_data.password,db)
+    if not user:
+        return "Faslse Authentication"
+    return "Succsessful Authentication"
+
