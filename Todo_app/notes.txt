@@ -26,3 +26,5 @@ SQLite version 3.51.1 2025-11-28 17:28:25
 #in auth, first ei amra db ani nai. jokhon ansi db_dependency inject korsi.(async def e add db:db_dependency type), post e return crreate use model na diye, db.add,db.commit.
 
 *pip install puthon-multipart (authentication - we can submit forms)
+
+
