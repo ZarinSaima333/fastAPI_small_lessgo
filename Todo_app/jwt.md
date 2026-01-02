@@ -321,4 +321,3 @@ Larger request size
 21. One-Line Summary
 JWT is a stateless, signed token mechanism that securely authenticates users and authorizes access in modern distributed systems.
 
-![alt text](C:\Users\USER\OneDrive\Pictures\jwt.png)
