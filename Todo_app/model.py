@@ -1,6 +1,8 @@
 from database import Base
 from sqlalchemy import Integer,Column,Boolean,String,ForeignKey
 
+#database er table
+
 class Users(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key = True, index = True)
