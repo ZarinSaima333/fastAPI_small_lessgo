@@ -5,15 +5,20 @@ from database import  session_local
 from pydantic import BaseModel
 from model import Users
 from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt   
+from fastapi.security import OAuth2PasswordRequestForm,OAuth2AuthorizationCodeBearer
+from jose import jwt,JWTError 
 from datetime import timedelta,timezone,datetime
+
 
 router =  APIRouter()
 
 SECRET_KEY="69697acb995d927f038f3fe90e96c2aa25107314cfeeeed508a71545274ed4f7"
 ALGORITHM='HS256'
+
 bcrypt_context = CryptContext(schemes=['bcrypt'],deprecated='auto')
+
+oauth2_bearer = OAuth2AuthorizationCodeBearer('tokenURL'='token')
+
 
 class CreateUserReq(BaseModel):
     username: str
@@ -54,6 +59,22 @@ def create_access_token(username:str,user_id:id,expire_delta:timedelta):
     expires = datetime.now(timezone.utc)+expire_delta
     encode.update({'exp':expires})
     return jwt.encode(encode,SECRET_KEY,algorithm=ALGORITHM)
+
+async def get_current_user(token:Annotated[str,Depends(oauth2_bearer)]):#dependency injection of oauth bearer
+    try:
+        payload =jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
+        username:str= payload.get('sub') #sub holo username
+        user_id:int = payload.get('id')
+
+        if username is None or user_id is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                detail='Could not validate user')
+        return {'username':username,'id':user_id}
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                detail='Could not validate user')
+
+
 
 @router.post("/auth/",status_code=status.HTTP_201_CREATED)
 async def create_user(db:db_dependency,create_user_req:CreateUserReq):
