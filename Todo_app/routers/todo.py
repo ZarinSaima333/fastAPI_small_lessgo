@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends,HTTPException,status,Path
 from model import Todo
 from database import  session_local #removing engine
 from pydantic import BaseModel,Field
+from .auth import get_current_user
 #from routers import auth not needed
 
 router = APIRouter()
@@ -22,10 +23,19 @@ def get_db():
         yield db #yield shoho get_db porjonto jabe, er ager part, response pathanor ag porjonto, only uses db when using it, colses after, safe and fast.
     finally:
         db.close() #afyer the response has been deleivered
+'''
+Type-annotated dependencies.
+steps:
 
+Call get_db()
+
+Inject the returned value
+
+Guarantee the value is a SQLAlchemy Session”
+'''
 
 db_dependency = Annotated[Session, Depends(get_db)]
-
+user_dependency = Annotated[dict,Depends(get_current_user)]
 #pydantic req: it is a todos req of a post http req of a body of a todo, validaton
 
 class TodoReq(BaseModel):
@@ -34,21 +44,30 @@ class TodoReq(BaseModel):
     priority: int= Field(gt=0, lt=6)
     complete:bool
 
+#shob info dei oi login kora user er
 @router.get("/",status_code=status.HTTP_200_OK)
-async def read_all(db: db_dependency):
-    return db.query(Todo).all()
+async def read_all(db: db_dependency,user:user_dependency):
+    if user is None:
+        raise HTTPException(status_code=401,detail='authentication failed')
+    return db.query(Todo).filter(Todo.owner_id==user.get('id')).all()
 
 
 @router.get("/todo/{todo_id}",status_code=status.HTTP_200_OK)
-async def read_todo(db:db_dependency, todo_id:int=Path(gt=0)):
-    todo_model = db.query(Todo).filter(Todo.id== todo_id).first()
+async def read_todo(db:db_dependency,user:user_dependency, todo_id:int=Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401,detail='authentication failed')
+    todo_model = db.query(Todo).filter(Todo.id== todo_id).filter(Todo.owner_id==user.get('id')).first()
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404,detail="Todo not found.")
 
 @router.post("/todo",status_code=status.HTTP_200_OK)
-async def create_todo(db:db_dependency,todo_req:TodoReq):
-    todo_model=Todo(**todo_req.model_dump())
+async def create_todo(db:db_dependency,user:user_dependency,
+                      todo_req:TodoReq):
+    
+    if user is None:
+        raise HTTPException(status_code=401,detail='authentication failed')
+    todo_model=Todo(**todo_req.model_dump(),owner_id=user.get('id'))
     db.add(todo_model)
     db.commit()
 

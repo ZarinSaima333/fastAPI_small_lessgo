@@ -55,6 +55,7 @@ def authenticate_user(username:str,password:str,db):
         return False
     #return True #correct pass
     return user
+
 def create_access_token(username:str,user_id:id,expire_delta:timedelta):
     #create encoding of jwt
 
@@ -62,6 +63,7 @@ def create_access_token(username:str,user_id:id,expire_delta:timedelta):
     expires = datetime.now(timezone.utc)+expire_delta
     encode.update({'exp':expires})
     return jwt.encode(encode,SECRET_KEY,algorithm=ALGORITHM)
+
 
 async def get_current_user(token:Annotated[str,Depends(oauth2_bearer)]):#dependency injection of oauth bearer
     try:

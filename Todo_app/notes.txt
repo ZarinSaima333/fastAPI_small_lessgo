@@ -27,7 +27,7 @@ SQLite version 3.51.1 2025-11-28 17:28:25
 
 *pip install puthon-multipart (authentication - we can submit forms)
 
-#JWT install
+#JWT install (authorizatuin)
 pip install "python-jose[cryptography]" 
 
 (venv_fastapi) C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>openssl rand -hex 32
