@@ -6,10 +6,13 @@ from pydantic import BaseModel
 from model import Users
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt   
+from datetime import timedelta,timezone,datetime
 
 router =  APIRouter()
 
-
+SECRET_KEY="69697acb995d927f038f3fe90e96c2aa25107314cfeeeed508a71545274ed4f7"
+ALGORITHM='HS256'
 bcrypt_context = CryptContext(schemes=['bcrypt'],deprecated='auto')
 
 class CreateUserReq(BaseModel):
@@ -19,6 +22,10 @@ class CreateUserReq(BaseModel):
     last_name:str
     password:str
     role:str
+
+class Token(BaseModel):
+    access_token:str
+    token_type:str
 
 #get db
 
@@ -32,16 +39,21 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-def autheniocate_user(username:str,password:str,db):
+def authenticate_user(username:str,password:str,db):
     user= db.query(Users).filter(Users.username==username).first()
     if not user:
         return False
     if not bcrypt_context.verify(password,user.hashed_pass):
         return False
-    return True #correct pass
+    #return True #correct pass
+    return user
+def create_access_token(username:str,user_id:id,expire_delta:timedelta):
+    #create encoding of jwt
 
-
-
+    encode={'sub':username,'id':user_id}
+    expires = datetime.now(timezone.utc)+expire_delta
+    encode.update({'exp':expires})
+    return jwt.encode(encode,SECRET_KEY,algorithm=ALGORITHM)
 
 @router.post("/auth/",status_code=status.HTTP_201_CREATED)
 async def create_user(db:db_dependency,create_user_req:CreateUserReq):
@@ -68,11 +80,14 @@ async def create_user(db:db_dependency,create_user_req:CreateUserReq):
 
 #authentication tasks started!
 
-@router.post("/token")
+@router.post("/token",response_model=Token)
 async def login_for_access_token(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
                                  db:db_dependency):
-    user= autheniocate_user(form_data.username,form_data.password,db)
+    user= authenticate_user(form_data.username,form_data.password,db)
     if not user:
         return "Faslse Authentication"
-    return "Succsessful Authentication"
+    token = create_access_token(user.username,user.id,timedelta(minutes=20))
+    
+    return {'access_token':token,'token_type':'bearer'}
+    #return token
 
