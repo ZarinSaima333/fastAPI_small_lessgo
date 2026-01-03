@@ -74,11 +74,14 @@ async def create_todo(db:db_dependency,user:user_dependency,
 
 @router.put('/todo/{todo_id}',status_code=status.HTTP_204_NO_CONTENT)
 async def update_todo(db:db_dependency,
+                      user:user_dependency,
                        todo_req:TodoReq,
                       todo_id:int=Path(gt=0)#error if put before todo_req should be above of anything hat deala with a path paramter
                      ):
-    
-    todo_model=db.query(Todo).filter(Todo.id==todo_id).first()
+    if user is None:
+        raise HTTPException(status_code=401,detail='authentication failed')
+
+    todo_model=db.query(Todo).filter(Todo.id==todo_id).filter(Todo.owner_id==user.get('id')).first()
     if todo_model is None:
         
         raise HTTPException(status_code=404,detail="Todo not found.")
