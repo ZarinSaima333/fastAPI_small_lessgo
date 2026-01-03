@@ -5,19 +5,22 @@ from database import  session_local
 from pydantic import BaseModel
 from model import Users
 from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordRequestForm,OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordRequestForm,OAuth2AuthorizationCodeBearer,OAuth2PasswordBearer
 from jose import jwt,JWTError 
 from datetime import timedelta,timezone,datetime
 
 
-router =  APIRouter()
+router =  APIRouter(
+    prefix="/auth",  #swagger e start hob eita diye endpoint
+    tags=['auth']  #swagger e alada vabe dekha jabe
+)
 
 SECRET_KEY="69697acb995d927f038f3fe90e96c2aa25107314cfeeeed508a71545274ed4f7"
 ALGORITHM='HS256'
 
 bcrypt_context = CryptContext(schemes=['bcrypt'],deprecated='auto')
 
-oauth2_bearer = OAuth2AuthorizationCodeBearer('tokenURL'='token')
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 class CreateUserReq(BaseModel):
@@ -76,7 +79,7 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_bearer)]):#depende
 
 
 
-@router.post("/auth/",status_code=status.HTTP_201_CREATED)
+@router.post("/",status_code=status.HTTP_201_CREATED)
 async def create_user(db:db_dependency,create_user_req:CreateUserReq):
     #create_user_model = Users(**create_user_req.model_dump())
     #uporer ta use korbo na karon class create users e password ase, ar amr model,py e ase  hashed_pass= Column(String) basically db er table er column er shathe pydantic naam mile nai.
@@ -106,7 +109,9 @@ async def login_for_access_token(form_data:Annotated[OAuth2PasswordRequestForm,D
                                  db:db_dependency):
     user= authenticate_user(form_data.username,form_data.password,db)
     if not user:
-        return "Faslse Authentication"
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                detail='Could not validate user')
+        #return "Faslse Authentication"
     token = create_access_token(user.username,user.id,timedelta(minutes=20))
     
     return {'access_token':token,'token_type':'bearer'}
