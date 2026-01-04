@@ -2,10 +2,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./todoapp.db"
+SQLALCHEMY_DATABASE_URL ="postgresql://postgres:roza@localhost/TododAppPostgresqlDB"
+#SQLALCHEMY_DATABASE_URL = "sqlite:///./todoapp.db" sqlite
 
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args = {"check_same_thread" : False}) #fastapi works with multiple thread. Allows FastAPI (multi-threaded) to use the same SQLite connection safely
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+#engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args = {"check_same_thread" : False}) #fastapi works with multiple thread. Allows FastAPI (multi-threaded) to use the same SQLite connection safely.last part is for sqlite
 
 session_local = sessionmaker(bind=engine,autoflush=False) #cause I want  to take the full control of the system autoflush=False → Changes are not sent to DB automatically autocommit=False → You must manually commit
 
