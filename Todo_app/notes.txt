@@ -149,3 +149,51 @@ CREATE TABLE `todos` (
 select sql file and check if you getthe clm names
 
 pip install pymysql
+
+#albembic(database migration tool):
+
+models.py if i add phone_num to our db when working in swagger ui while authorozing internal server error 500 will be thrown.
+
+Alembic helps you manage changes to your database schema over time—such as creating tables, adding columns, or modifying constraints—without losing data.
+Track schema versions (like Git, but for databases)
+
+-Apply updates incrementally instead of recreating the database
+
+-Rollback changes safely if something breaks
+
+-Keep database schema in sync with your SQLAlchemy models
+
+*Key things Alembic does
+
+1.Initialize a new,hgmneric env
+code: alembic init <folder name>
+
+after initialzing two things will appear:
+-albembic.ini:congig info
+-alembic directory: all env properties for albemic,all rev of application, where you can call the migration for upgrading and downgrading.
+
+2.Creates a revision if the environment
+code:alembic revision  -m "msg"
+
+3.Run our upgrade migration to our database:
+alembic upgrade <revision #>
+
+4.Run our downgrade migration to our database:
+alembic downgrade -1
+
+
+*gpt
+1.Generates migration files (revision files)
+
+2.Applies migrations using:
+
+code:alembic upgrade head
+
+
+3.Can auto-detect model changes:
+
+code:alembic revision --autogenerate -m "add users table"
+
+*albemic installation:
+pip install alembic
+alembic init alembic
