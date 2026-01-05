@@ -35,3 +35,75 @@ This project builds on Project 1 and introduces **data validation and advanced F
 | 400 Bad Request | Invalid request       | POST, PUT                  |
 | 404 Not Found | Resource not found      | GET, PUT, DELETE           |
 | 500 Internal Server Error | Server failed | Any request               |
+
+# Project 3: 📝 Todo Application (FastAPI)
+
+A **production-ready Todo Application** built using **FastAPI**, designed to demonstrate real-world backend development concepts including **authentication, authorization, database integration, migrations, and role-based access control**.
+
+This project evolves step-by-step from a simple CRUD-based Todo app to a **secure, scalable API** using modern backend tools and best practices.
+
+---
+
+## 🚀 Project Overview
+
+This Todo application allows users to:
+
+- Register and authenticate securely
+- Create, update, delete, and view their own todos
+- Use JWT-based authentication for protected routes
+- Enable admin-level operations
+- Work with multiple database systems
+- Apply schema migrations using Alembic
+
+The project is fully documented using **Swagger UI (OpenAPI 3.1)**.
+
+---
+
+## 🧠 Concepts & Technologies Covered
+
+### 🔹 FastAPI Core
+- FastAPI project structure & best practices
+- Request lifecycle and dependency injection
+- Path & query parameters
+- Status codes (`200`, `201`, `400`, `401`, `403`, `404`, `500`)
+- Interactive API docs using Swagger UI
+
+### 🔹 Pydantic
+- Pydantic v1 vs Pydantic v2
+- Request validation
+- Response models
+- Data serialization & type enforcement
+
+### 🔹 Database & ORM
+- SQL fundamentals
+- SQLite3 (local development)
+- PostgreSQL (production-ready DB)
+- MySQL integration
+- SQLAlchemy ORM
+- One-to-Many relationships
+- Foreign keys
+- Database session handling
+
+### 🔹 Authentication & Authorization
+- User registration & login
+- Password hashing (Passlib)
+- OAuth2 password flow
+- JSON Web Tokens (JWT)
+- Token encoding & decoding
+- Securing routes using dependencies
+- Role-based access (Admin vs User)
+
+### 🔹 API Architecture
+- Router-based modular design
+- Separation of concerns
+- Auth router
+- Todo router
+- Admin router
+- User router
+
+### 🔹 Database Migration
+- Alembic setup & configuration
+- Revision creation
+- Upgrade & downgrade migrations
+- Schema versioning
+- Safe DB evolution
