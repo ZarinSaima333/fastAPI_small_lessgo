@@ -193,9 +193,9 @@ code:alembic upgrade head
 
 
 3.Can auto-detect model changes:
-
 code:alembic revision --autogenerate -m "add users table"
 
+users/GetUserInfo- no  phone number:( even after adding column in model.py
 *albemic installation:
 pip install alembic
 alembic init alembic
@@ -216,3 +216,49 @@ def upgrade() -> None:
 
 (venv_fastapi) C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>alembic upgrade 2db1a00ec6a7
 run uvicorn
+
+users/GetUserInfo- yes phone number:)
+
+
+
+*downgrade:
+| Goal                    | Command                           |
+| ----------------------- | --------------------------------- |
+| Revert last migration   | `alembic downgrade -1`            |
+| Revert N migrations     | `alembic downgrade -N`            |
+| Go to specific revision | `alembic downgrade <revision_id>` |
+| Remove everything       | `alembic downgrade base`          |
+| Reapply all             | `alembic upgrade head`            |
+| See history             | `alembic history`                 |
+| Current revision        | `alembic current`                 |
+
+Explanation:
+1️⃣ How Alembic identifies migrations
+
+Each migration has a revision ID, like:
+
+revision = "3f9a2c7d1a21"
+down_revision = "1b4e6c8f9d02"
+
+
+This forms a linear chain (or tree).
+
+2️⃣ Downgrade to a SPECIFIC revision (most common)
+Step 1: See migration history
+alembic history
+
+
+Example output:
+
+1b4e6c8f9d02 -> 3f9a2c7d1a21 (add phone_number)
+3a9c1e22d123 -> 1b4e6c8f9d02 (create users table)
+
+Step 2: Downgrade to the revision you want
+alembic downgrade 3a9c1e22d123
+
+
+👉 This will:
+
+Undo all migrations AFTER that revision
+
+Stop exactly at 3a9c1e22d123
