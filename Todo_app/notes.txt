@@ -20,6 +20,12 @@ VALUES
 ('test api', 'test endpoints using Postman', 3, 0),
 ('write README', 'document project setup and usage', 3, 1);
 
+**existing database:todoapp.bd
+C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>sqlite3 todoapp.db
+sqlite> .tables
+alembic_version  todos            users
+sqlite> SELECT * FROM users;
+1|string|roza|string|string|$2b$12$Da/PwyXprCz42U.1sMmpKORAT0LlYR8UbqcdcfH8txk.uq|1|string|
 
 * later we made the tables using SQLAlchemy, in model.py. owner etc was addded later as fk in the table.
 
@@ -30,7 +36,7 @@ VALUES
 *ASGI error: def last e oi direcrtory te thakbe jeikhane main.py chilo er theke low level e giye uvicorn main:app --reload dile hobena.
 
 *sql can only create the table not enhance, to do that we need albembic.
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 *for hashedpass install :pip install bcrypt==4.0.1
 :pip install passlib
 
@@ -46,6 +52,7 @@ pip install "python-jose[cryptography]"
 
 jwt.io t ewe can decoded header(alg,typ)playload(sub,id,exp),secret.
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #Production RDBMS
 #Postgresql
 
@@ -92,6 +99,7 @@ tables created, now change database url and others in database.py.
 then, (venv_fastapi) C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>pip install psycopg2-binary
 then, run uvicorn. after running prev.db will be there incase you want to switch back to sqlite
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #MySQL
 download:mysql->developer zone->MySQL DOwnloads-> MySQL community server->go to download page->download the istaller
 developer Deafault
@@ -149,7 +157,7 @@ CREATE TABLE `todos` (
 select sql file and check if you getthe clm names
 
 pip install pymysql
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #albembic(database migration tool):
 
 models.py if i add phone_num to our db when working in swagger ui while authorozing internal server error 500 will be thrown.
@@ -262,3 +270,44 @@ alembic downgrade 3a9c1e22d123
 Undo all migrations AFTER that revision
 
 Stop exactly at 3a9c1e22d123
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+👉Pytest
+test/test---
+
+(venv_fastapi)---fastAPI_small_lessgo\Todo_app> pip install pytest
+run pytest just
+
+
+(venv_fastapi)---fastAPI_small_lessgo\Todo_app> pytest
+
+============================== test session starts ===============================
+platform win32 -- Python 3.12.7, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app     
+plugins: anyio-4.12.0
+collected 1 item
+
+test\test_example.py .                                                      [100%] 
+
+=============================== 1 passed in 0.10s ================================
+
+(venv_fastapi) PS C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Topytest>
+========================== test session starts ===========================
+platform win32 -- Python 3.12.7, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app
+plugins: anyio-4.12.0
+collected 1 item
+
+test\test_example.py F                                              [100%]
+
+================================ FAILURES ================================ 
+________________________ test_equal_or_not_equal _________________________ 
+
+    def test_equal_or_not_equal():
+        assert 3==3
+>       assert 3!=3
+E       assert 3 != 3
+
+test\test_example.py:3: AssertionError
+======================== short test summary info ========================= 
+FAILED test/test_example.py::test_equal_or_not_equal - assert 3 != 3       
+=========================== 1 failed in 0.30s ============================ 
