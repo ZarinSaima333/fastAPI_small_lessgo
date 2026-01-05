@@ -172,8 +172,10 @@ after initialzing two things will appear:
 -albembic.ini:congig info
 -alembic directory: all env properties for albemic,all rev of application, where you can call the migration for upgrading and downgrading.
 
-2.Creates a revision if the environment
+2.Creates a revision FILE where we can write upgrade code. Each new revision will have a revision id.
 code:alembic revision  -m "msg"
+
+
 
 3.Run our upgrade migration to our database:
 alembic upgrade <revision #>
@@ -197,3 +199,20 @@ code:alembic revision --autogenerate -m "add users table"
 *albemic installation:
 pip install alembic
 alembic init alembic
+
+*in almebic.ini change the database url
+*in albemic/env.py 
+1.comment out if config.config_file
+2.make the line under it come forward
+3.target_metadata = model.Base.metadata
+
+(venv_fastapi) C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>alembic revision -m "create column for phone number"
+Generating C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app\alembic\versions\2db1a00ec6a7_create_column_for_phone_number.py ...  done 
+
+in the new rev file add this:
+def upgrade() -> None:
+    op.add_column('users',sa.Column('phone_number',sa.String(),nullable=True))
+    pass
+
+(venv_fastapi) C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>alembic upgrade 2db1a00ec6a7
+run uvicorn
