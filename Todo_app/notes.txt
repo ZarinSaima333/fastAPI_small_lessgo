@@ -63,7 +63,7 @@ CREATE TABLE users (
   username varchar(45) DEFAULT NULL,
   first_name varchar(45) DEFAULT NULL,
   last_name varchar(45) DEFAULT NULL,
-  hashed_password varchar(200) DEFAULT NULL,
+  hashed_pass varchar(200) DEFAULT NULL,
   is_active boolean DEFAULT NULL,
   role varchar(45) DEFAULT NULL,
   PRIMARY KEY (id)
@@ -91,3 +91,61 @@ Query returned successfully in 109 msec.
 tables created, now change database url and others in database.py.
 then, (venv_fastapi) C:\Users\USER\OneDrive\Documents\GitHub\fastAPI_small_lessgo\Todo_app>pip install psycopg2-binary
 then, run uvicorn. after running prev.db will be there incase you want to switch back to sqlite
+
+#MySQL
+download:mysql->developer zone->MySQL DOwnloads-> MySQL community server->go to download page->download the istaller
+developer Deafault
+pass:roza username:admin
+
+to see if the server is there:
+C:\Users\USER>services.msc
+
+C:\Users\USER>mysql --version
+'mysql' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+okay, version 8 will be downloaded.
+Uninstall MySQL 9.5 (important)
+
+Open Control Panel → Programs → Uninstall a program
+
+Uninstall ALL MySQL items, especially:
+
+MySQL Server 9.5
+
+from mysql community downloads downloaded this one- mysql-installer-community-8.0.44.0.msi
+mysqlworkbench ->
+1.schema crate schema(db)
+
+2. paste in query1
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(200) DEFAULT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `first_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `hashed_pass` varchar(200) DEFAULT NULL,
+  `is_active` int(1) DEFAULT NULL,
+  `role` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `todos`;
+
+CREATE TABLE `todos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `priority` int(1) DEFAULT NULL,
+  `complete` int(1) DEFAULT NULL,
+  `owner_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`owner_id`) REFERENCES users(`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+select sql file and check if you getthe clm names
+
+pip install pymysql
