@@ -311,3 +311,84 @@ test\test_example.py:3: AssertionError
 ======================== short test summary info ========================= 
 FAILED test/test_example.py::test_equal_or_not_equal - assert 3 != 3       
 =========================== 1 failed in 0.30s ============================ 
+
+*if a class does not start with test it wont be tested.
+*if a class has init it wont be tested
+
+cmd: pip install httpx -for dynamic call using library
+✅ Why ModuleNotFoundError: No module named 'main' happens
+
+Python resolves imports using sys.path, which includes:
+
+The current working directory
+
+Installed site-packages
+
+Paths added via PYTHONPATH
+
+When you write:
+
+import main
+
+
+Python looks for:
+
+main.py in the current directory, or
+
+a package named main inside sys.path
+
+If it can’t find either → ❌ ModuleNotFoundError
+
+✅ Role of __init__.py
+__init__.py tells Python:
+"This directory is a package"
+
+
+It does NOT:
+
+define the project root
+
+automatically expose child modules
+
+fix import paths by itself
+
+It only allows imports relative to that package.
+
+✅ Example Project Structure (Correct)
+Todo_app/
+│
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── models.py
+│   └── routes/
+│       └── users.py
+│
+└── tests/
+    └── test_api.py
+
+✅ Correct Import Usage
+
+From inside the project:
+
+from app.main import app
+
+
+❌ Incorrect:
+
+import main
+
+
+Because main.py is inside app/, not at the root.
+
+✅ Why httpx is needed in tests
+pip install httpx
+
+
+httpx is used by FastAPI’s TestClient for async HTTP calls during testing.
+
+Without it, pytest may fail with errors related to:
+
+async request handling
+
+missing transport backend

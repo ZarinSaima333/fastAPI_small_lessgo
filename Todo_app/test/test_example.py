@@ -1,3 +1,5 @@
+import pytest
+
 def test_equal_or_not_equal():
     assert 3==3
     assert 3!=1
@@ -61,3 +63,31 @@ assert flag is True  # acceptable
 | `False`    | ❌ False    |
 
 '''
+
+
+class Student:
+    def __init__(self,first_name:str,last_name:str,major:str,years:int):
+        self.first_name=first_name
+        self.last_name=last_name
+        self.major=major
+        self.years=years
+
+@pytest.fixture
+def default_employee():
+    return Student('Jhon',"Doe",'Computer Science',3)
+
+# def test_person_initialization():
+#     p = Student('jhon','doe','Comptuer Science',3)
+#     assert p.first_name=='jhon','First name should be john'
+#     assert p.last_name=='Doe','Last name should be Doe'
+#     assert p.major=='Computer Science'
+#     assert p.years==3
+
+
+
+def test_person_initialization(default_employee):
+    #p = Student('jhon','doe','Comptuer Science',3)
+    assert default_employee.first_name=='jhon','First name should be John'
+    assert default_employee.last_name=='Doe','Last name should be Doe'
+    assert default_employee.major=='Computer Science'
+    assert default_employee.years==3
