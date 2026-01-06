@@ -87,7 +87,7 @@ def default_employee():
 
 def test_person_initialization(default_employee):
     #p = Student('jhon','doe','Comptuer Science',3)
-    assert default_employee.first_name=='jhon','First name should be John'
+    assert default_employee.first_name=='Jhon','First name should be John'
     assert default_employee.last_name=='Doe','Last name should be Doe'
     assert default_employee.major=='Computer Science'
     assert default_employee.years==3

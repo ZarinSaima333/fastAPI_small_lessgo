@@ -401,3 +401,43 @@ ERROR:    Error loading ASGI app. Could not import module "main".
 . means on the same file we there is another deeper root
 ..mean two file out
 
+*Test Database and Dependencies (Short Notes)
+
+-Use a separate test database for testing; never use the production database.
+
+-The app has two databases: one for production and one for tests.
+
+-Tests run with testing dependencies, while the live app uses production dependencies.
+
+-Shared dependencies can be moved to a common file later.
+
+*Test Setup
+
+-Create test_todos.py to test todos.py.
+
+-Create a test database engine using SQLAlchemy:
+
+-Use SQLite (test_db.db) for testing only.
+
+-Import create_engine and StaticPool.
+
+-Import Base from database.
+
+-Create TestingSessionLocal using sessionmaker.
+
+-Create tables with Base.metadata.create_all(bind=engine).
+
+*Dependency Overrides
+
+-Override get_db with get_testing_db using TestingSessionLocal.
+
+-Override get_current_user with a mock user (e.g., admin user).
+
+-Apply overrides using app.dependency_overrides.
+
+*Testing Client
+
+-Wrap the FastAPI app with TestClient(app).
+
+-When run with pytest, FastAPI uses the test database and dependencies, not production.
+
