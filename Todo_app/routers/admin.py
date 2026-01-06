@@ -1,13 +1,25 @@
+# #root
+# from typing import Annotated
+# from sqlalchemy.orm import Session
+# from fastapi import APIRouter, Depends,HTTPException,status,Path
+# #import model not needed
+# from model import Todo
+# from database import  session_local #removing engine
+# from pydantic import BaseModel,Field
+# from .auth import get_current_user
+# #from routers import auth not needed
+
 #root
 from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends,HTTPException,status,Path
 #import model not needed
-from model import Todo
-from database import  session_local #removing engine
+from ..model import Todo
+from ..database import  session_local #removing engine
 from pydantic import BaseModel,Field
 from .auth import get_current_user
 #from routers import auth not needed
+
 
 router = APIRouter(
      prefix="/admin", 

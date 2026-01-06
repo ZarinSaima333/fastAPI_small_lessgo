@@ -2,9 +2,9 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends,HTTPException,status,Path
-from model import Users
-from model import Todo
-from database import  session_local #removing engine
+from ..model import Users
+from ..model import Todo
+from ..database import  session_local #removing engine
 from pydantic import BaseModel,Field
 from passlib.context import CryptContext
 from .auth import get_current_user

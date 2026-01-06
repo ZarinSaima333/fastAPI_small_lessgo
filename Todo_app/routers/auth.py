@@ -1,9 +1,9 @@
 from fastapi import FastAPI, APIRouter, Depends,HTTPException,status,Path
 from typing import Annotated
 from sqlalchemy.orm import Session
-from database import  session_local
+from ..database import  session_local
 from pydantic import BaseModel
-from model import Users
+from ..model import Users
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2AuthorizationCodeBearer,OAuth2PasswordBearer
 from jose import jwt,JWTError 

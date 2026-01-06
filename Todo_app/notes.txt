@@ -314,7 +314,7 @@ FAILED test/test_example.py::test_equal_or_not_equal - assert 3 != 3
 
 *if a class does not start with test it wont be tested.
 *if a class has init it wont be tested
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 cmd: pip install httpx -for dynamic call using library
 ✅ Why ModuleNotFoundError: No module named 'main' happens
 
@@ -392,3 +392,12 @@ Without it, pytest may fail with errors related to:
 async request handling
 
 missing transport backend
+
+#ekhon main file tar issue still not fixed. I have sshifted tothe root direcrtory. now if 
+i run uvicorn it will throw an error.-unable to connect
+ERROR:    Error loading ASGI app. Could not import module "main".
+
+
+. means on the same file we there is another deeper root
+..mean two file out
+

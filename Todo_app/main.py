@@ -1,15 +1,22 @@
 #root
 
+# from fastapi import FastAPI
+# #import model when todo app is the root directory
+# from database import engine
+
+# from routers import auth, todo, admin, user
+
+
 from fastapi import FastAPI
-import model
+from .model import Base
+from .database import engine
 
-from database import engine
-
-from routers import auth, todo, admin, user
-
+from .routers import auth, todo, admin, user
 app = FastAPI()
 
-model.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
+
+#model.Base.metadata.create_all(bind=engine)
 
 #after making this file we'll start the uvicorn command and automatically todo.db will be created
 
