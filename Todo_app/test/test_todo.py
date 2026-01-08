@@ -1,62 +1,16 @@
-from sqlalchemy import create_engine,text
-from sqlalchemy.pool import StaticPool
-from sqlalchemy.orm import sessionmaker,Session
 from ..model import Base, Todo
-from fastapi import Depends,status,dependencies
-from typing import Annotated
+from fastapi import Depends,status
 from ..main import app
 from ..routers.todo import get_db,get_current_user
 from fastapi.testclient import TestClient
-import pytest
-
-SQLALCHEMY_DATABASE_URL="sqlite:///./testdb.db"
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL,
-                       connect_args={'check_same_thread':False},
-                       poolclass = StaticPool
-                       )
-
-testing_session_local = sessionmaker(autocommit=False,
-                                     autoflush=False,
-                                     bind=engine)
+from .utlis import *
 
 
-Base.metadata.create_all(bind=engine)
-
-def override_get_db():
-    db = testing_session_local()
-    try:
-        yield db #yield shoho get_db porjonto jabe, er ager part, response pathanor ag porjonto, only uses db when using it, colses after, safe and fast.
-    finally:
-        db.close()
-
-def override_get_current_user():
-    return {'username':'zarinsaima',
-            'id':1,
-            'user_role':'admin'}
 
 app.dependency_overrides[get_db]=override_get_db
 app.dependency_overrides[get_current_user]=override_get_current_user
 
-client = TestClient(app)
 
-@pytest.fixture
-def test_todo():
-    todo = Todo(
-        title= "Learn to code",
-        description="Need to learn everything",
-        priority=5,
-        complete=False,
-        owner_id=1
-    )
-
-    db = testing_session_local()
-    db.add(todo)
-    db.commit()
-    yield todo
-    with engine.connect() as connection:
-        connection.execute(text("DELETE FROM todos;"))
-        connection.commit()
 
 def test_read_all_authenticated(test_todo):
     response = client.get('/')
