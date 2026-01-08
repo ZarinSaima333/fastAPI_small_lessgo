@@ -116,14 +116,20 @@ Testing is implemented using **Pytest** and **FastAPI’s TestClient**, covering
  
 
 ### 🔹 Test Structure
-
 Todo_app/
-├── test/
-│ ├── test_admin.py # Admin-only routes
-│ ├── test_todo.py # Todo CRUD operations
-│ ├── test_example.py # Basic sanity tests
-│ ├── user_test.py # User-related endpoints
-│ └── utils.py # Test DB & dependency overrides
+├─ ─ test/
+│ ├─ ─ test_admin.py # Admin-only routes
+│ ├─ ─ test_todo.py # Todo CRUD operations
+│ ├─ ─ test_example.py # Basic sanity tests
+│ ├─ ─ user_test.py # User-related endpoints
+│ └─ ─ utils.py # Test DB & dependency overrides
+
+
+
+
+
+
+
 
 ## 🔹 Running Tests
 
