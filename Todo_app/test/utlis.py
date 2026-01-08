@@ -32,7 +32,7 @@ def override_get_db():
 def override_get_current_user():
     return {'username':'zarinsaima',
             'id':1,
-            'user_role':'admin'}
+            'user_role':'admin'} #chaning admin to non admin because 
 client = TestClient(app)
 
 @pytest.fixture
