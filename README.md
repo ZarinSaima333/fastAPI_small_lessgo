@@ -116,6 +116,8 @@ Testing is implemented using **Pytest** and **FastAPI’s TestClient**, covering
  
 
 ### 🔹 Test Structure
+
+```bash
 Todo_app/
 ├─ ─ test/
 │ ├─ ─ test_admin.py # Admin-only routes
