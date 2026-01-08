@@ -125,17 +125,11 @@ Todo_app/
 │ ├─ ─ test_example.py # Basic sanity tests
 │ ├─ ─ user_test.py # User-related endpoints
 │ └─ ─ utils.py # Test DB & dependency overrides
-
-
-
-
-
-
-
-
+ ``` 
 ## 🔹 Running Tests
 
 Run all tests using:
 
 ```bash
 pytest
+ ``` 
