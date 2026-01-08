@@ -456,3 +456,8 @@ Massive mistake: user_dependency returns a dict
 user_dependency = Annotated[dict,Depends(get_current_user)]
 
 but user_model used to fetch row from db is a Class and returns an object.Finally! testing is fun
+
+
+*authenticate_user_var=authenticate_user(test_user.username,'zarinsaima',db)
+*-you cant use the var and def the same name
+*testing an async fun that is not a endpoint- async def test_blahblah, but skip or error dibe so use  pip installpytest-asyncio
