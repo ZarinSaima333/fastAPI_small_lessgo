@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,text
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker,Session
-from ..model import Base 
+from ..model import Base, Todo
 from fastapi import Depends,status,dependencies
 from typing import Annotated
 from ..main import app
@@ -40,6 +40,107 @@ app.dependency_overrides[get_current_user]=override_get_current_user
 
 client = TestClient(app)
 
-def test_read_all_authenticated():
+@pytest.fixture
+def test_todo():
+    todo = Todo(
+        title= "Learn to code",
+        description="Need to learn everything",
+        priority=5,
+        complete=False,
+        owner_id=1
+    )
+
+    db = testing_session_local()
+    db.add(todo)
+    db.commit()
+    yield todo
+    with engine.connect() as connection:
+        connection.execute(text("DELETE FROM todos;"))
+        connection.commit()
+
+def test_read_all_authenticated(test_todo):
     response = client.get('/')
     assert response.status_code==status.HTTP_200_OK
+    assert response.json()==[{
+        'id':1,
+        'title': "Learn to code",
+        'description':"Need to learn everything",
+        'priority':5,
+        'complete':False,
+        'owner_id':1}]
+    
+def test_read_one_authenticated(test_todo):
+    response = client.get('/todo/1')
+    assert response.status_code==status.HTTP_200_OK
+    assert response.json()=={
+        'id':1,
+        'title': "Learn to code",
+        'description':"Need to learn everything",
+        'priority':5,
+        'complete':False,
+        'owner_id':1}
+    
+def test_read_one_authenticated_not_found():
+    response = client.get('/todo/999')
+    assert response.status_code==404
+    assert response.json()=={
+        'detail':'Todo not found.'}
+    
+def test_create(test_todo):
+   request_data={
+       'title':'New Todo!',
+       'description':'New todo description',
+       'priority':5,
+       'complete':False
+   }
+   response=client.post('/todo/',json=request_data) #issue
+   assert response.status_code==201 
+    #after we save the todo, we make sure all the info is there
+   db= testing_session_local()
+   model=db.query(Todo).filter(Todo.id==2).first() #fixture_test will have id 1
+   assert model.title==request_data.get('title')
+   assert model.description==request_data.get('description')
+   assert model.priority==request_data.get('priority')
+   assert model.complete==request_data.get('complete')
+
+def test_update_todo(test_todo):
+    request_data={
+        'title':'change the title',
+        'description':"Need to learn everyday",
+        'priority':5,
+        'complete':False
+    }
+
+    response= client.put('/todo/1',json=request_data)
+    assert response.status_code==204
+
+    db= testing_session_local()
+    model=db.query(Todo).filter(Todo.id==1).first()
+    assert model.title=='change the title'
+
+def test_update_todo_not_found(test_todo):
+    request_data={
+        'title':'change the title',
+        'description':"Need to learn everyday",
+        'priority':5,
+        'complete':False
+    }
+
+    response= client.put('/todo/999',json=request_data)
+    assert response.status_code==404
+
+    assert response.json()=={'detail':'Todo not found.'}
+
+
+def test_delete_todo(test_todo):
+    response = client.delete("/todo/1")
+    assert response.status_code==204
+    db = testing_session_local()
+    model = model=db.query(Todo).filter(Todo.id==1).first()
+    assert model is None
+
+def test_delete_todo():
+    response = client.delete("/todo/1")
+    assert response.status_code==404
+   
+    assert response.json()=={'detail':'Todo not found.'}

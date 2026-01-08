@@ -441,3 +441,8 @@ ERROR:    Error loading ASGI app. Could not import module "main".
 
 -When run with pytest, FastAPI uses the test database and dependencies, not production.
 
+| Status  | Meaning                              |
+| ------- | ------------------------------------ |
+| **404** | Route exists, resource not found     |
+| **405** | Route exists, method not allowed     |
+| **422** | Validation error (bad body / params) |
