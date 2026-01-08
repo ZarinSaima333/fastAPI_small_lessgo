@@ -107,3 +107,27 @@ The project is fully documented using **Swagger UI (OpenAPI 3.1)**.
 - Upgrade & downgrade migrations
 - Schema versioning
 - Safe DB evolution
+
+# 🧪 Testing (Todo Application)
+
+This project includes a comprehensive **automated testing suite** to ensure reliability, correctness, and production readiness of the API.
+
+Testing is implemented using **Pytest** and **FastAPI’s TestClient**, covering authentication, authorization, database operations, and role-based access control.
+ 
+
+### 🔹 Test Structure
+
+Todo_app/
+├── test/
+│ ├── test_admin.py # Admin-only routes
+│ ├── test_todo.py # Todo CRUD operations
+│ ├── test_example.py # Basic sanity tests
+│ ├── user_test.py # User-related endpoints
+│ └── utils.py # Test DB & dependency overrides
+
+## 🔹 Running Tests
+
+Run all tests using:
+
+```bash
+pytest
