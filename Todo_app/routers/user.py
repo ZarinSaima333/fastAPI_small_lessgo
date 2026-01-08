@@ -59,11 +59,28 @@ returned Response Body:
 async def pass_change(db:db_dependency,user:user_dependency, user_verification:UserVerification):
     if user is None:
         raise HTTPException(status_code=401,detail="Authentication Failed")
-    user_model= db.query(Users).filter(Users.id==user.get('id')).first()
+    user_model= db.query(Users).filter(Users.id==user.get('id')).first() #user_model returs a class obj user returns
 
-    if not bcrypt_context.verify(user_verification.old_pass,user.hashed_pass):
+    if not bcrypt_context.verify(user_verification.old_pass,user_model.hashed_pass): #massive mistake, user.hashed_pass is expecting a user object but i had a dict. mistake is it should be user_model 
         raise HTTPException(status_code=401,detail="Error on password change")
 
-    user_model.hassed_pass=bcrypt_context.hash(user_verification.new_pass)
+    user_model.hashed_pass=bcrypt_context.hash(user_verification.new_pass)
+    db.add(user_model)
+    db.commit()
+
+@router.put("/phonenumber/{new_phone}", status_code=status.HTTP_204_NO_CONTENT)
+async def change_phone_number(
+    new_phone: str,
+    db: db_dependency,
+    user: user_dependency
+):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication Failed")
+
+    user_model = db.query(Users).filter(Users.id == user.get('id')).first()
+    if user_model is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user_model.phone_number = new_phone
     db.add(user_model)
     db.commit()

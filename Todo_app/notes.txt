@@ -449,3 +449,10 @@ ERROR:    Error loading ASGI app. Could not import module "main".
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 utlis file= reusibility-SQLAlchemy_URL,TestingSessionLocal,override_db,overrride_user,test_fixture,test_client
+jei file er jonno test kortesi oi file thekei dependencies import kortle hhbe
+client.put er json file e must must match korte hobe Pydantic model er var er naam er shthae
+
+Massive mistake: user_dependency returns a dict 
+user_dependency = Annotated[dict,Depends(get_current_user)]
+
+but user_model used to fetch row from db is a Class and returns an object.Finally! testing is fun
