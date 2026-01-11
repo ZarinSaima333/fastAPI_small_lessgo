@@ -110,7 +110,7 @@ The project is fully documented using **Swagger UI (OpenAPI 3.1)**.
 
 # 🧪 Testing (Todo Application)
 
-This project includes a comprehensive **automated testing suite** to ensure reliability, correctness, and production readiness of the API.
+This project includes a comprehensive **automated testing suite** to ensure reliability, and production readiness of the API.
 
 Testing is implemented using **Pytest** and **FastAPI’s TestClient**, covering authentication, authorization, database operations, and role-based access control.
  
@@ -133,3 +133,6 @@ Run all tests using:
 ```bash
 pytest
  ``` 
+
+
+
